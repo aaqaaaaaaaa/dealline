@@ -1,4 +1,4 @@
-import 'package:dealline/pages/brends.dart';
+import 'package:dealline/pages/brend_page/brends.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 

@@ -1,8 +1,13 @@
-import 'package:dealline/pages/menu_page.dart';
+import 'package:dealline/pages/menu_page/menu_page.dart';
 import 'package:dealline/styles/styles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// ignore: deprecated_member_use
 import 'package:collection/equality.dart' show IterableEquality;
+
+
+
+
 
 class PinPage extends StatefulWidget {
   const PinPage({Key? key}) : super(key: key);
@@ -33,11 +38,11 @@ class _PinPageState extends State<PinPage> {
               height: 72,
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 63),
+              margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 6.6),
               decoration: BoxDecoration(
                 gradient: RadialGradient(colors: [
                   primaryColor,
-                  // backgroundColor,
                   Colors.grey.withOpacity(0.0),
                 ]),
               ),
@@ -71,22 +76,6 @@ class _PinPageState extends State<PinPage> {
                       ],
                     ),
                   ),
-                  // Image.asset('assets/images/row.png',
-                  //     width: MediaQuery.of(context).size.width * 2),
-//             Container(
-//               height: 3,
-// margin: EdgeInsets.symmetric(horizontal: 30),
-//               decoration:  const BoxDecoration(
-//                 gradient: LinearGradient(
-//                   colors: [
-//                     Color(0xffC4C4C4),
-//                     primaryColor,
-//                     Color(0xffC4C4C4),
-//                   ],
-//
-//                 ),
-//               ),
-//             ),
                   Padding(
                     padding: EdgeInsets.only(
                       bottom: 3,
@@ -317,6 +306,7 @@ class _PinPageState extends State<PinPage> {
     if (index == 4) {
       var trFalse = const IterableEquality().equals(listAddPin, listPin);
       if (trFalse) {
+
         // showCupertinoDialog(
         //     context: context,
         //     builder: createAuthDialog); // showDialog('Authentication failed');

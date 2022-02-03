@@ -1,4 +1,4 @@
-import 'package:dealline/pages/brends.dart';
+import 'package:dealline/pages/brend_page/brends.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/dropdwonButton.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +107,7 @@ void showDialogZakazat(BuildContext context) => showDialog(
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  Brands(),
+                          builder: (context) =>  BrandPage(),
                         ));
                   },
                   child: const Padding(

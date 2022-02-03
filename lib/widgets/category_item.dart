@@ -1,7 +1,6 @@
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 
-
 /// 3talik  gridView uchun yasalgan class
 
 class CategoryItem {
@@ -40,7 +39,7 @@ List categoryList = [
   'assets/images/category_image/holodilnik.png',
 ];
 final itemsActiveColor = CategoryItems();
-List<CategoryItem> CategoryItemList = [
+final CategoryItemList = <CategoryItem>[
   CategoryItem(
     isActiveColor: itemsActiveColor.isActiveColor ?? false,
     number: 12,
@@ -200,9 +199,8 @@ class _CategoryItemsState extends State<CategoryItems> {
             child: InkWell(
               borderRadius: BorderRadius.circular(5),
               onTap: () {
-                debugPrint('Tapped');
+                // debugPrint('Tapped');
                 widget.callback!();
-
               },
 
               // setState(() {

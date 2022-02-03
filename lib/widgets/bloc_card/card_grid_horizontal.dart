@@ -1,7 +1,10 @@
-import 'package:dealline/pages/element_card_widget_in_hero.dart';
+import 'package:dealline/pages/category_page/cubit/category_cubit.dart';
+import 'package:dealline/pages/product_item_screen/element_card_widget_in_hero.dart';
 import 'package:dealline/styles/styles.dart';
+import 'package:dealline/widgets/bloc_card/cardgrid_cubit.dart';
 import 'package:dealline/widgets/category_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Холодельники   /// Посмотреть все
 ///ostidagi kartalar
@@ -22,7 +25,7 @@ class CardInGridViewHorizontal {
       required this.price});
 }
 
-List<CardInGridViewHorizontal> CardList = [
+final CardList = <CardInGridViewHorizontal>[
   CardInGridViewHorizontal(
     image: 'assets/images/card_images/holodilnik_black.png',
     title: 'Samsung RT6000K 530л',
@@ -65,13 +68,14 @@ class CardGridWidget extends StatefulWidget {
       this.selectedItem,
       this.title,
       this.description,
-      this.price})
+      this.price, this.callbackGrid})
       : super(key: key);
   final String? image;
   final String? title;
   final String? description;
   final int? price;
   final bool? selectedItem;
+  final VoidCallback? callbackGrid;
 
   @override
   _CardGridWidgetState createState() => _CardGridWidgetState();
@@ -123,17 +127,18 @@ class _CardGridWidgetState extends State<CardGridWidget> {
           Expanded(child: Container()),
           InkWell(
             borderRadius: BorderRadius.circular(8),
-            onTap: () {
-              for (int i = 0; i < CardList.length; i++) {
-                CardList[i].isSelected = true;
-              }
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CardElementWidgetInHero(),
-                  ));
+            onTap: () =>BlocProvider.of<CategoryCubit>(context).callbackGrid(1,context),
+              // for (int i = 0; i <  BlocProvider.of<CategoryCubit>(context).cardGrid.length; i++) {
+              //   BlocProvider.of<CategoryCubit>(context).cardGrid[i].isSelected = true;
+              //   print(BlocProvider.of<CategoryCubit>(context).cardGrid[i].isSelected);
+              // }
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => CardElementWidgetInHero(),
+              //     ));
               // debugPrint('${CategoryItemList[index]}');
-            },
+
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 15),
               alignment: Alignment.bottomCenter,
@@ -153,38 +158,42 @@ class _CardGridWidgetState extends State<CardGridWidget> {
   }
 }
 
-Widget categoriesCardGridHorizontal(BuildContext context) {
-  return GridView.builder(
-      controller: controller,
-      scrollDirection: Axis.vertical,
-      itemCount: CardList.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 7,
-          childAspectRatio: 2 / 4),
-      itemBuilder: (context, int index) {
-        return Hero(
-          tag: CardList[index].isSelected == true,
-          child: CardGridWidget(
-              selectedItem: CardList[index].isSelected,
-              price: CardList[index].price,
-              description: '${CardList[index].description}',
-              image: "${CardList[index].image}",
-              title: '${CardList[index].title}'),
-        );
+Widget categoriesCardGridHorizontal(BuildContext context, bool isOpen) {
+  return Padding(
+    padding: EdgeInsets.only(bottom: isOpen ? 23 : 0),
+    child: BlocBuilder<CategoryCubit, CategoryState>(
+      builder: (context, state) {
+        return GridView.builder(
+            controller: controller,
+            scrollDirection: Axis.vertical,
+            itemCount: CardList.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 7,
+                childAspectRatio: 2 / 4),
+            itemBuilder: (context, int index) {
+              return CardGridWidget(
+                  selectedItem: state.cardGrid[index].isSelected,
+                  price: state.cardGrid[index].price,
+                  description: '${state.cardGrid[index].description}',
+                  image: "${state.cardGrid[index].image}",
+                  title: '${state.cardGrid[index].title}');
 
-        //   isActiveColor: activeColor,
-        //   numb: CategoryItemList[index].number,
-        //   titles: '${CategoryItemList[index].title}',
-        //   images: '${CategoryItemList[index].image}',
-        //   id: CategoryItemList[index].id,
-        //   callback: () {
-        //     setState(() {
-        //       if (CategoryItemList[index].id == index)
-        //         activeColor = !activeColor;
-        //     });
-        //   },
-        // );
-      });
+              //   isActiveColor: activeColor,
+              //   numb: CategoryItemList[index].number,
+              //   titles: '${CategoryItemList[index].title}',
+              //   images: '${CategoryItemList[index].image}',
+              //   id: CategoryItemList[index].id,
+              //   callback: () {
+              //     setState(() {
+              //       if (CategoryItemList[index].id == index)
+              //         activeColor = !activeColor;
+              //     });
+              //   },
+              // );
+            });
+      },
+    ),
+  );
 }

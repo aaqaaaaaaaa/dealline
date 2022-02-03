@@ -1,12 +1,16 @@
 import 'package:dealline/styles/styles.dart';
-import 'package:dealline/widgets/card_grid_horizontal.dart';
+import 'package:dealline/widgets/bloc_card/card_grid_horizontal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../widgets/bloc_card/cardgrid_cubit.dart';
 // import 'package:simple_star_rating/simple_star_rating.dart';
 
 class CardElementWidgetInHero extends StatefulWidget {
-  const CardElementWidgetInHero({Key? key}) : super(key: key);
-
+   CardElementWidgetInHero({Key? key,required this.index,required this.isSelected}) : super(key: key);
+ bool isSelected;
+  int index;
   @override
   _CardElementWidgetInHeroState createState() =>
       _CardElementWidgetInHeroState();
@@ -46,21 +50,24 @@ class _CardElementWidgetInHeroState extends State<CardElementWidgetInHero> {
                   child: Image.asset('assets/images/icons/poopup_menu.png'))
             ],
           ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height / 1.2,
-                maxWidth: MediaQuery.of(context).size.width / 1.1),
-            child: ListView.builder(
-              itemCount: 1,
-              itemBuilder: (context, index) => Hero(
-                tag: CardList[index].isSelected == true,
-                child: CardGridElementWidget(
-                    price: CardList[index].price,
-                    description: '${CardList[index].description}',
-                    image: "${CardList[index].image}",
-                    title: '${CardList[index].title}'),
-              ),
-            ),
+          BlocBuilder<CardGridCubit, CardGridState>(
+            builder: (context, state) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height / 1.2,
+                    maxWidth: MediaQuery.of(context).size.width / 1.1),
+                child: Expanded(
+
+          child:
+                     CardGridElementWidget(
+                        price: state.cardState[widget.index].price,
+                        description: '${state.cardState[widget.index].description}',
+                        image: "${state.cardState[widget.index].image}",
+                        title: '${state.cardState[widget.index].title}')
+
+                ),
+              );
+            },
           ),
         ],
       ),

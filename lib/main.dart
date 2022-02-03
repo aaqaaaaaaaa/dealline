@@ -1,6 +1,8 @@
-import 'package:dealline/pages/authentification_page.dart';
-import 'package:dealline/pages/category_page.dart';
-import 'package:dealline/pages/element_card_widget_in_hero.dart';
+import 'package:dealline/pages/brend_page/brends.dart';
+import 'package:dealline/pages/login/authentification_page.dart';
+import 'package:dealline/pages/category_page/category_page.dart';
+import 'package:dealline/pages/product_item_screen/element_card_widget_in_hero.dart';
+import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,11 +25,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.white,
-        primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
+        primarySwatch: Colors.amber,
       ),
-      home:
-      AuthentificationPage(),
+      home: BrandPage()
+      // AuthPage(),
     );
   }
 }

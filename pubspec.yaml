@@ -35,8 +35,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.0
-
-
+  shared_preferences: any
+  flutter_bloc: ^8.0.1
+  pin_code_fields: any
+  fluttertoast: any
+  auto_size_text: ^3.0.0
+  scrollable_positioned_list: ^0.2.3
 
 dev_dependencies:
   flutter_test:
