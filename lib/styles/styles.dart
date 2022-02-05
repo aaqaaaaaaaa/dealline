@@ -10,6 +10,17 @@ const Color textFieldFillColor = Color(0xffF8F8F8);
 const Color categoryBackgroundColor = Color(0xffE9E9E9);
 
 
+ButtonStyle dialogButtonStyle=  ButtonStyle(
+    fixedSize: MaterialStateProperty.all(Size(104,28)),
+    backgroundColor:
+    MaterialStateProperty.all(primaryColor),
+    shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+        ),
+    ),
+);
+
 Color gradientColor = const Color(0xff252525).withOpacity(0);
 ButtonStyle keyboardButtonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(backgroundColor),

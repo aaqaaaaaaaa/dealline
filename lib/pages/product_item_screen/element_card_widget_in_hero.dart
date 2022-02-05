@@ -1,16 +1,22 @@
+import 'package:dealline/pages/category_page/cubit/category_cubit.dart';
+import 'package:dealline/pages/favorites/favorite_page.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/bloc_card/card_grid_horizontal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../widgets/bloc_card/cardgrid_cubit.dart';
-// import 'package:simple_star_rating/simple_star_rating.dart';
-
+/// mahsulotni  alohida qilib  ko'rsatiladigan joy
 class CardElementWidgetInHero extends StatefulWidget {
-   CardElementWidgetInHero({Key? key,required this.index,required this.isSelected}) : super(key: key);
- bool isSelected;
-  int index;
+  CardElementWidgetInHero(
+      {Key? key, required this.indexHero, required this.contextHero})
+      : super(key: key);
+  int indexHero;
+  BuildContext contextHero;
+
   @override
   _CardElementWidgetInHeroState createState() =>
       _CardElementWidgetInHeroState();
@@ -50,52 +56,61 @@ class _CardElementWidgetInHeroState extends State<CardElementWidgetInHero> {
                   child: Image.asset('assets/images/icons/poopup_menu.png'))
             ],
           ),
-          BlocBuilder<CardGridCubit, CardGridState>(
-            builder: (context, state) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height / 1.2,
-                    maxWidth: MediaQuery.of(context).size.width / 1.1),
-                child: Expanded(
-
-          child:
-                     CardGridElementWidget(
-                        price: state.cardState[widget.index].price,
-                        description: '${state.cardState[widget.index].description}',
-                        image: "${state.cardState[widget.index].image}",
-                        title: '${state.cardState[widget.index].title}')
-
-                ),
-              );
-            },
-          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height / 1.2,
+                maxWidth: MediaQuery.of(context).size.width / 1.1),
+            child: CardGridElementWidget(
+                price: CardList[widget.indexHero].price,
+                description:
+                    '${CardList[widget.indexHero].description}',
+                image: "${CardList[widget.indexHero].image}",
+                title: '${CardList[widget.indexHero].title}'),
+          )
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
-        style: ButtonStyle(
-            maximumSize: MaterialStateProperty.all(
-              Size(324, 47),
-            ),
-            backgroundColor: MaterialStateProperty.all(primaryColor)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 13.0),
-              child: Text(
-                'Добавить в корзину',
-                style: TextStyle(color: Color(0xff212121), fontSize: 16),
+          style: ButtonStyle(
+              maximumSize: MaterialStateProperty.all(
+                Size(324, 47),
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Image.asset('assets/images/icons/favorite icon.png')
-          ],
-        ),
-        onPressed: () {},
-      ),
+              backgroundColor: MaterialStateProperty.all(primaryColor)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                child: Text(
+                  'Добавить в корзину',
+                  style: TextStyle(color: Color(0xff212121), fontSize: 16),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Image.asset('assets/images/icons/favorite icon.png')
+            ],
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Fluttertoast.showToast(
+              msg: 'Добавлено в корзину!',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              fontSize: 16,
+            );
+            BlocProvider.of<CategoryCubit>(widget.contextHero)
+              .favoriteCallBack(widget.indexHero, CardList);
+          }
+          // int index = 1;
+          // final item = CardInGridViewHorizontal;
+          // Hive.box('Favorite_Box').put(CardList[index].id, item);
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(),));
+
+          ),
     );
   }
 }

@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CategoriesGridHorizontal extends StatefulWidget {
-  CategoriesGridHorizontal({Key? key, this.activeColor, this.catName})
+  CategoriesGridHorizontal({Key? key, this.activeColor,required this.index, this.catName})
       : super(key: key);
   bool? activeColor;
   late String? catName;
-
+int index =0;
   @override
   _CategoriesGridHorizontalState createState() =>
       _CategoriesGridHorizontalState();
@@ -22,10 +22,11 @@ class _CategoriesGridHorizontalState extends State<CategoriesGridHorizontal> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryCubit, CategoryState>(
-      builder: (context, state) {
+      builder: (_, state) {
         return ScrollablePositionedList.builder(
             shrinkWrap: true,
-            itemScrollController: state.itemController,
+            initialScrollIndex: widget.index,
+            // itemScrollController: state.itemController,
             scrollDirection: Axis.horizontal,
             itemCount: state.brands.length,
             // controller: state.controller,
@@ -34,7 +35,7 @@ class _CategoriesGridHorizontalState extends State<CategoriesGridHorizontal> {
             //     crossAxisSpacing: 0,
             //     mainAxisSpacing: 7,
             //     childAspectRatio: 2 / 1.6),
-            itemBuilder: (context, int index) {
+            itemBuilder: (_, int index) {
               final brand = state.brands[index];
               return Container(
                 width: 120,

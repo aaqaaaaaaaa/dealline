@@ -1,4 +1,3 @@
-import 'package:dealline/pages/category_page/cubit/category_cubit.dart';
 import 'package:dealline/pages/product_item_screen/element_card_widget_in_hero.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/bloc_card/cardgrid_cubit.dart';
@@ -16,24 +15,27 @@ class CardInGridViewHorizontal {
   String description;
   int price;
   bool isSelected;
+  int id;
 
   CardInGridViewHorizontal(
       {required this.image,
       required this.isSelected,
+      required this.id,
       required this.title,
       required this.description,
       required this.price});
 }
 
-final CardList = <CardInGridViewHorizontal>[
+List<CardInGridViewHorizontal> CardList = [
   CardInGridViewHorizontal(
     image: 'assets/images/card_images/holodilnik_black.png',
     title: 'Samsung RT6000K 530л',
     description: 'Система Twin Cooling Plus\n'
         'Инверторный компрессор DIT\n'
         'Функция Power Cool',
-    price: 1995000,
+    price: 1000000,
     isSelected: false,
+    id: 0,
   ),
   CardInGridViewHorizontal(
       image: 'assets/images/card_images/holodilnik_white.png',
@@ -42,40 +44,46 @@ final CardList = <CardInGridViewHorizontal>[
       description: 'Система Twin Cooling Plus\n'
           'Инверторный компрессор DIT\n'
           'Функция Power Cool',
-      price: 1995000),
+      price: 2000000,
+      id: 1),
   CardInGridViewHorizontal(
+      id: 2,
       isSelected: false,
       image: 'assets/images/card_images/holodilnik_white.png',
       title: 'Samsung RT6000K 530л',
       description: 'Система Twin Cooling Plus'
           'Инверторный компрессор DIT'
           'Функция Power Cool',
-      price: 1995000),
+      price: 3000000),
   CardInGridViewHorizontal(
+      id: 3,
       isSelected: false,
       image: 'assets/images/card_images/holodilnik_white.png',
       title: 'Samsung RT6000K 530л',
       description: 'Система Twin Cooling Plus'
           'Инверторный компрессор DIT'
           'Функция Power Cool',
-      price: 1995000),
+      price: 4000000),
 ];
 
 class CardGridWidget extends StatefulWidget {
   const CardGridWidget(
       {Key? key,
       this.image,
+      required this.context,
+      required this.id,
       this.selectedItem,
       this.title,
       this.description,
-      this.price, this.callbackGrid})
+      this.price})
       : super(key: key);
   final String? image;
   final String? title;
   final String? description;
   final int? price;
+  final int id;
   final bool? selectedItem;
-  final VoidCallback? callbackGrid;
+  final BuildContext context;
 
   @override
   _CardGridWidgetState createState() => _CardGridWidgetState();
@@ -127,18 +135,24 @@ class _CardGridWidgetState extends State<CardGridWidget> {
           Expanded(child: Container()),
           InkWell(
             borderRadius: BorderRadius.circular(8),
-            onTap: () =>BlocProvider.of<CategoryCubit>(context).callbackGrid(1,context),
-              // for (int i = 0; i <  BlocProvider.of<CategoryCubit>(context).cardGrid.length; i++) {
-              //   BlocProvider.of<CategoryCubit>(context).cardGrid[i].isSelected = true;
-              //   print(BlocProvider.of<CategoryCubit>(context).cardGrid[i].isSelected);
-              // }
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => CardElementWidgetInHero(),
-              //     ));
-              // debugPrint('${CategoryItemList[index]}');
+            onTap: () {
+              for (int i = 0; i < CardList.length; i++) {
+                if (widget.id == i) {
+                  CardList[i].isSelected = true;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CardElementWidgetInHero(
+                        indexHero: widget.id,
+                        contextHero: widget.context,
+                      ),
+                    ),
+                  );
+                }
+              }
 
+              // debugPrint('${CategoryItemList[index]}');
+            },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 15),
               alignment: Alignment.bottomCenter,
@@ -158,42 +172,51 @@ class _CardGridWidgetState extends State<CardGridWidget> {
   }
 }
 
+/// holodilniklar
 Widget categoriesCardGridHorizontal(BuildContext context, bool isOpen) {
-  return Padding(
-    padding: EdgeInsets.only(bottom: isOpen ? 23 : 0),
-    child: BlocBuilder<CategoryCubit, CategoryState>(
-      builder: (context, state) {
-        return GridView.builder(
-            controller: controller,
-            scrollDirection: Axis.vertical,
-            itemCount: CardList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 7,
-                childAspectRatio: 2 / 4),
-            itemBuilder: (context, int index) {
-              return CardGridWidget(
-                  selectedItem: state.cardGrid[index].isSelected,
-                  price: state.cardGrid[index].price,
-                  description: '${state.cardGrid[index].description}',
-                  image: "${state.cardGrid[index].image}",
-                  title: '${state.cardGrid[index].title}');
+  return BlocProvider.value(
+    value: CardGridCubit(category: CardList),
 
-              //   isActiveColor: activeColor,
-              //   numb: CategoryItemList[index].number,
-              //   titles: '${CategoryItemList[index].title}',
-              //   images: '${CategoryItemList[index].image}',
-              //   id: CategoryItemList[index].id,
-              //   callback: () {
-              //     setState(() {
-              //       if (CategoryItemList[index].id == index)
-              //         activeColor = !activeColor;
-              //     });
-              //   },
-              // );
-            });
-      },
+    // create: (context) => CardGridCubit(category: CardList),
+    child: Padding(
+      padding: EdgeInsets.only(bottom: isOpen ? 23 : 0),
+      child: BlocBuilder<CardGridCubit, CardGridState>(
+        builder: (context, state) {
+          return GridView.builder(
+              controller: controller,
+              scrollDirection: Axis.vertical,
+              itemCount: CardList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 7,
+                  childAspectRatio: 2 / 4),
+              itemBuilder: (_, int index) {
+                return CardGridWidget(
+                  selectedItem: state.cardState[index].isSelected,
+                  price: state.cardState[index].price,
+                  description: '${state.cardState[index].description}',
+                  image: "${state.cardState[index].image}",
+                  title: '${state.cardState[index].title}',
+                  id: state.cardState[index].id,
+                  context: context,
+                );
+
+                //   isActiveColor: activeColor,
+                //   numb: CategoryItemList[index].number,
+                //   titles: '${CategoryItemList[index].title}',
+                //   images: '${CategoryItemList[index].image}',
+                //   id: CategoryItemList[index].id,
+                //   callback: () {
+                //     setState(() {
+                //       if (CategoryItemList[index].id == index)
+                //         activeColor = !activeColor;
+                //     });
+                //   },
+                // );
+              });
+        },
+      ),
     ),
   );
 }

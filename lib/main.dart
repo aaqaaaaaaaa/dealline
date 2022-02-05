@@ -5,14 +5,21 @@ import 'package:dealline/pages/product_item_screen/element_card_widget_in_hero.d
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+final String FAVORITE_BOX = 'Favorite_Box';
+final String PIN_BOX = 'PIN_Box';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox(FAVORITE_BOX);
+  // await Hive.openBox(PIN_BOX);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,14 +29,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        primarySwatch: Colors.amber,
-      ),
-      home: BrandPage()
-      // AuthPage(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          primarySwatch: Colors.amber,
+        ),
+        home: AuthPage()
+        // AuthPage(),
+        );
   }
 }

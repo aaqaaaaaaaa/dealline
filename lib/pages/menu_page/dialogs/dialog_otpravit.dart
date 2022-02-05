@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:dealline/styles/styles.dart';
 
-import '../widgets/dropdwonButton.dart';
 
-void showDialogOtpravit(BuildContext context) => showDialog(
+void  showDialogOtpravit(BuildContext context) => showDialog(
     context: context,
     builder: (context) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0),
@@ -66,38 +65,22 @@ void showDialogOtpravit(BuildContext context) => showDialog(
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 18.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                          style:dialogButtonStyle,
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 34.0),
-                            child: Text(
-                              'Нет',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12),
-                            ),
+                          child: Text(
+                            'Нет',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
                           )),
                       ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)))),
+                        style: dialogButtonStyle,
                         onPressed: () {
                           Navigator.pop(context);
                           // Navigator.push(
@@ -106,15 +89,12 @@ void showDialogOtpravit(BuildContext context) => showDialog(
                           //       builder: (context) => const Brands(),
                           //     ));
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34.0),
-                          child: Text(
-                            'Да',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12),
-                          ),
+                        child: Text(
+                          'Да',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
                         ),
                       ),
                     ],

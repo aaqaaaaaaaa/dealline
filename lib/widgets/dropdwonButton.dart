@@ -29,6 +29,7 @@ class _DDBWidgetState extends State<DDBWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 19,
       width: MediaQuery.of(context).size.width / 1.5,
       padding: const EdgeInsets.only(
         left: 10,
@@ -96,24 +97,40 @@ class _TextFieldRowState extends State<TextFieldRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Image.asset('${widget.prefixImageTExtField}'),
+        Container(
+            width: 16,
+            child: Image.asset('${widget.prefixImageTExtField}')),
         const SizedBox(
           width: 17,
         ),
         Container(
+            height: 29,
             width: MediaQuery.of(context).size.width / 1.5,
             padding: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
             ),
             child: TextField(
+              textAlignVertical: TextAlignVertical(y: 1),
               cursorColor: textColor,
               style: textStyle,
               decoration: InputDecoration(
                 filled: true,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+                ),
                 fillColor: textFieldFillColor,
                 // prefixIcon: Image.asset('${widget.prefixImageTExtField}'),
-                border: InputBorder.none,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(
+                      width: 0.0,
+                      style: BorderStyle.none,
+                      color: Colors.white,
+                    )),
                 hintText: '${widget.hinText}',
                 hintStyle: textStyle,
                 // prefixIcon: Image.asset('assets/images/icons/locationIcon.png')),

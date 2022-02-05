@@ -1,9 +1,14 @@
-import 'package:dealline/dialogs/dialog_otchyoti.dart';
-import 'package:dealline/dialogs/dialog_otpravit.dart';
-import 'package:dealline/dialogs/dialog_platit.dart';
-import 'package:dealline/dialogs/zakazatDialog.dart';
+import 'package:dealline/pages/favorites/favorite_page.dart';
 import 'package:dealline/styles/styles.dart';
+import 'package:dealline/widgets/bloc_card/card_grid_horizontal.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../settings/settings_page.dart';
+import 'dialogs/dialog_otchyoti.dart';
+import 'dialogs/dialog_otpravit.dart';
+import 'dialogs/dialog_platit.dart';
+import 'dialogs/zakazatDialog.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -59,7 +64,9 @@ class _MenuPageState extends State<MenuPage> {
                       vertical: 20.0,
                       horizontal: MediaQuery.of(context).size.width / 130),
                   child: InkWell(
-                    onTap: () => showDialogOtchyoti(context),
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) =>OtchyotDialog()),
                     child: MenuCard(
                         icon: 'assets/images/icons/otchyotIcon.png',
                         title: 'Отчёты'),
@@ -70,50 +77,53 @@ class _MenuPageState extends State<MenuPage> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          height: 43,
-                          width: MediaQuery.of(context).size.width / 2.95,
-                          decoration: const BoxDecoration(
-                            color: primaryColor,
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(8)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 11.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(child: Container()),
-                                Image.asset(
-                                    'assets/images/icons/korzinaIcon.png'),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                const Text(
-                                  'Заказы',
-                                  style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Expanded(child: Container()),
-                                Container(
-                                  width: 10,
-                                  height: 10,
-                                  decoration: const BoxDecoration(
-                                      color: textColor,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(2),
-                                        bottomLeft: Radius.circular(2),
-                                      )),
-                                  child: const Center(
-                                      child: Text(
-                                    '2',
+                        InkWell(
+                          onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(),)),
+                          child: Container(
+                            height: 43,
+                            width: MediaQuery.of(context).size.width / 2.95,
+                            decoration: const BoxDecoration(
+                              color: primaryColor,
+                              borderRadius:
+                                  BorderRadius.only(topLeft: Radius.circular(8)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 11.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(child: Container()),
+                                  Image.asset(
+                                      'assets/images/icons/korzinaIcon.png'),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  const Text(
+                                    'Заказы',
                                     style: TextStyle(
-                                        fontSize: 7, color: primaryColor),
-                                  )),
-                                )
-                              ],
+                                        color: textColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Expanded(child: Container()),
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: const BoxDecoration(
+                                        color: textColor,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(2),
+                                          bottomLeft: Radius.circular(2),
+                                        )),
+                                    child:  Center(
+                                        child: Text(
+                                      '${CardList.length}',
+                                      style: TextStyle(
+                                          fontSize: 7, color: primaryColor),
+                                    )),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -218,19 +228,38 @@ class _MenuPageState extends State<MenuPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(),));
+                      },
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width / 3.02,
                         child: const MenuCard(
-                            icon: 'assets/images/icons/zakazatIcon.png',
-                            title: 'Настройка')),
+                          icon: 'assets/images/icons/settings_icon.png',
+                          title: 'Настройка',
+                        ),
+                      ),
+                    ),
                     const SizedBox(
                       width: 20,
                     ),
                     SizedBox(
                         width: MediaQuery.of(context).size.width / 3.02,
-                        child: const MenuCard(
-                            icon: 'assets/images/icons/ic_refresh.png',
-                            title: 'Обновить')),
+                        child: InkWell(
+                          onTap: (){
+                            Fluttertoast.showToast(
+                              msg: 'Обновлено!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              // backgroundColor: Colors.black,
+                              fontSize: 16,
+                            );
+                          },
+                          child: const MenuCard(
+                              icon: 'assets/images/icons/ic_refresh.png',
+                              title: 'Обновить'),
+                        )),
                   ],
                 ),
               ],
@@ -240,6 +269,7 @@ class _MenuPageState extends State<MenuPage> {
       ),
     );
   }
+
 }
 
 class RowWidget extends StatelessWidget {
@@ -290,7 +320,7 @@ class _MenuCardState extends State<MenuCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(widget.icon),
+            Container(width: 30, height: 30, child: Image.asset(widget.icon)),
             const SizedBox(height: 8),
             Text(
               widget.title,

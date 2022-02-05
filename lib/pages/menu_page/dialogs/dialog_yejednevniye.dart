@@ -1,8 +1,10 @@
-import 'package:dealline/dialogs/dialog_otpravit.dart';
-import 'package:dealline/dialogs/dialog_platit.dart';
-import 'package:dealline/dialogs/zakazatDialog.dart';
+
+import 'package:dealline/pages/menu_page/otchyot_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dealline/styles/styles.dart';
+
+import 'dialog_otpravit.dart';
+import 'zakazatDialog.dart';
 
 const values = [
   'Отчёт по бренду',
@@ -28,24 +30,28 @@ class _buildRadiusTwoState extends State<buildRadiusTwo> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: values
           .map((value) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 38.0),
-                child: RadioListTile<String>(
-                    activeColor: textColor,
-                    value: value,
-                    title: Text(
-                      value,
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    groupValue: selectedValue,
-                    onChanged: (value) => setState(() {
-                          selectedValue = value.toString();
-                        })),
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: SizedBox(
+                  height: 45,
+                  child: RadioListTile<String>(
+                      activeColor: textColor,
+                      value: value,
+                      title: Text(
+                        value,
+                        style: TextStyle(
+                            color: textColor,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      groupValue: selectedValue,
+                      onChanged: (value) => setState(() {
+                            selectedValue = value.toString();
+                          })),
+                ),
               ))
           .toList(),
     );
@@ -95,51 +101,32 @@ void showDialogYejednevniye(BuildContext context) => showDialog(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: buildRadiusTwo(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  padding: const EdgeInsets.symmetric(vertical: 21.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                          style:dialogButtonStyle,
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 34.0),
-                            child: Text(
-                              'Назад',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12),
-                            ),
+                          child: Text(
+                            'Назад',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
                           )),
                       ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(primaryColor),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
+                        style: dialogButtonStyle,
                         onPressed: () {
                           Navigator.pop(context);
                           if (selectedValue == values.first) {
-                            showDialogOtpravit(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => OtchyotPage(),));
                           } else if (selectedValue == values.last) {
                             showDialogZakazat(context);
                           } else {
@@ -152,15 +139,12 @@ void showDialogYejednevniye(BuildContext context) => showDialog(
                           //       builder: (context) => const Brands(),
                           //     ));
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34.0),
-                          child: Text(
-                            'Далее',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12),
-                          ),
+                        child: Text(
+                          'Далее',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
                         ),
                       ),
                     ],

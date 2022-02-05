@@ -48,7 +48,7 @@ void showDialogZakazat(BuildContext context) => showDialog(
           ),
           Padding(
             padding:
-            const EdgeInsets.only(left: 16, right: 16.0, top: 30),
+            const EdgeInsets.only(left: 16, right: 16.0, top: 30,bottom: 13),
             child: Row(
               children: [
                 Image.asset('assets/images/icons/marketIcon.png'),
@@ -67,41 +67,26 @@ void showDialogZakazat(BuildContext context) => showDialog(
               hinText: 'Регион',
             ),
           ),
+          SizedBox(height: 27,),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 19.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(primaryColor),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
+                    style:dialogButtonStyle,
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 34.0),
-                      child: Text(
-                        'Назад',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12),
-                      ),
+                    child: Text(
+                      'Назад',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12),
                     )),
                 ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(primaryColor),
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)))),
+                  style: dialogButtonStyle,
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -110,15 +95,12 @@ void showDialogZakazat(BuildContext context) => showDialog(
                           builder: (context) =>  BrandPage(),
                         ));
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 34.0),
-                    child: Text(
-                      'Далее',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12),
-                    ),
+                  child: Text(
+                    'Далее',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12),
                   ),
                 ),
               ],

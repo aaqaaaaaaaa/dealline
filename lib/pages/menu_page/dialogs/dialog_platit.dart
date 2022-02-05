@@ -2,7 +2,7 @@ import 'package:dealline/pages/brend_page/brends.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/dropdwonButton.dart';
+import '../../../widgets/dropdwonButton.dart';
 
 void showDialogPlatit(BuildContext context) => showDialog(
     context: context,
@@ -46,8 +46,8 @@ void showDialogPlatit(BuildContext context) => showDialog(
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 19, right: 16.0, top: 30),
+                  padding: const EdgeInsets.only(
+                      left: 19, right: 16.0, top: 28, bottom: 13),
                   child: Row(
                     children: [
                       Image.asset('assets/images/icons/marketIcon.png'),
@@ -56,10 +56,8 @@ void showDialogPlatit(BuildContext context) => showDialog(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 19,
-                    right: 16.0,
-                  ),
+                  padding:
+                      const EdgeInsets.only(left: 19, right: 16.0, bottom: 13),
                   child: TextFieldRow(
                     prefixImageTExtField:
                         'assets/images/icons/locationIcon.png',
@@ -67,10 +65,8 @@ void showDialogPlatit(BuildContext context) => showDialog(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 19,
-                    right: 16.0,
-                  ),
+                  padding:
+                      const EdgeInsets.only(left: 19, right: 16.0, bottom: 13),
                   child: TextFieldRow(
                     prefixImageTExtField:
                         'assets/images/dialog_icons/Задолженность2.png',
@@ -78,10 +74,8 @@ void showDialogPlatit(BuildContext context) => showDialog(
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 19,
-                    right: 16.0,
-                  ),
+                  padding:
+                      const EdgeInsets.only(left: 19, right: 16.0, bottom: 13),
                   child: TextFieldRow(
                     prefixImageTExtField:
                         'assets/images/dialog_icons/Cумма к оплате2.png',
@@ -91,6 +85,7 @@ void showDialogPlatit(BuildContext context) => showDialog(
                 Padding(
                   padding: const EdgeInsets.only(right: 28.0, left: 19),
                   child: Container(
+                      height: 37,
                       width: MediaQuery.of(context).size.width / 1.33,
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
@@ -104,6 +99,14 @@ void showDialogPlatit(BuildContext context) => showDialog(
                         style: textStyle,
                         maxLines: 3,
                         decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.transparent, width: 0.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.transparent, width: 0.0),
+                          ),
                           filled: true,
                           fillColor: Colors.transparent,
                           // fillColor: textFieldFillColor,
@@ -118,38 +121,22 @@ void showDialogPlatit(BuildContext context) => showDialog(
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                          style:dialogButtonStyle,
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 34.0),
-                            child: Text(
-                              'Назад',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12),
-                            ),
+                          child: Text(
+                            'Назад',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
                           )),
                       ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)))),
+                        style:dialogButtonStyle,
                         onPressed: () {
                           Navigator.pop(context);
                           // Navigator.push(
@@ -158,15 +145,12 @@ void showDialogPlatit(BuildContext context) => showDialog(
                           //       builder: (context) => const Brands(),
                           //     ));
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34.0),
-                          child: Text(
-                            'Платить',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12),
-                          ),
+                        child: Text(
+                          'Платить',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
                         ),
                       ),
                     ],

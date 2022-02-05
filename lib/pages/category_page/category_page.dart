@@ -1,11 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dealline/grid_in_categories/categories_grid_in_horizontal.dart';
+import 'package:dealline/pages/favorites/favorite_page.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/bloc_card/card_grid_horizontal.dart';
-import 'package:dealline/widgets/bloc_card/cardgrid_cubit.dart';
 import 'package:dealline/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'cubit/category_cubit.dart';
 
 class Category extends StatelessWidget {
@@ -15,8 +16,7 @@ class Category extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CategoryCubit>(
-      create: (context) =>
-          CategoryCubit(category: CategoryItemList, cardGrid: CardList),
+      create: (context) => CategoryCubit(category: CategoryItemList, initialScrollIndex: 0),
       child: CategoryPage(
         title: title,
       ),
@@ -56,64 +56,182 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<CategoryCubit, CategoryState>(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          flexibleSpace: Image.asset(
+            'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
+            fit: BoxFit.cover,
+            color: Colors.grey.withOpacity(0.3),
+            // color: Colors.black.withOpacity(0.7),
+            colorBlendMode: BlendMode.modulate,
+          ),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Image.asset('assets/images/icons/ic_back.png')),
+          title: const Text(
+            'Бренды',
+            style: TextStyle(color: primaryColor, fontSize: 13),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size(double.infinity, 40),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 10, left: 30,right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FavoritesPage(),
+                          )),
+                      icon: Image.asset('assets/images/icons/korzina Icon.png')),
+                  _appBarSearchIcon,
+                  InkWell(
+                    onTap: _searchPressed,
+                    child: _searchIcon,
+                  ),
+                  // Container(
+                  //   height: 137,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.black.withOpacity(1),
+                  //     image: const DecorationImage(
+                  //       fit: BoxFit.cover,
+                  //       image: AssetImage(
+                  //         'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   child: Container(
+                  //     color: Colors.black.withOpacity(0.7),
+                  //     child: Column(
+                  //       children: [
+                  //         const SizedBox(
+                  //           height: 35,
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.start,
+                  //             children: [
+                  //               IconButton(
+                  //                   onPressed: () => Navigator.pop(context),
+                  //                   icon: Image.asset(
+                  //                       'assets/images/icons/ic_back.png')),
+                  //               const Text(
+                  //                 'Меню',
+                  //                 style:
+                  //                 TextStyle(color: primaryColor, fontSize: 13),
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         Container(
+                  //           margin: EdgeInsets.symmetric(horizontal: 30),
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               Image.asset('assets/images/icons/korzina Icon.png'),
+                  //               _appBarSearchIcon,
+                  //               InkWell(
+                  //                 onTap: _searchPressed,
+                  //                 child: _searchIcon,
+                  //               )
+                  //             ],
+                  //           ),
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // bottom: PreferredSize(
+                  //   child: Container(
+                  //     margin: EdgeInsets.symmetric(horizontal: 30),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         Image.asset('assets/images/icons/korzina Icon.png'),
+                  //         _appBarSearchIcon,
+                  //         InkWell(
+                  //           onTap: _searchPressed,
+                  //           child: _searchIcon,
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  //   preferredSize: Size.fromHeight(117),
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
         return Container(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  height: 137,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(1),
-                      image: const DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(
-                            'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
-                          ))),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.7),
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  icon: Image.asset(
-                                      'assets/images/icons/ic_back.png')),
-                              const Text(
-                                'Бренды',
-                                style: TextStyle(
-                                    color: primaryColor, fontSize: 13),
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Image.asset(
-                                  'assets/images/icons/korzina Icon.png'),
-                              _appBarSearchIcon,
-                              InkWell(
-                                onTap: _searchPressed,
-                                child: _searchIcon,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                // Container(
+                //   height: 137,
+                //   decoration: BoxDecoration(
+                //       color: Colors.black.withOpacity(1),
+                //       image: const DecorationImage(
+                //           fit: BoxFit.cover,
+                //           image: AssetImage(
+                //             'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
+                //           ))),
+                //   child: Container(
+                //     color: Colors.black.withOpacity(0.7),
+                //     child: Column(
+                //       children: [
+                //         const SizedBox(
+                //           height: 35,
+                //         ),
+                //         Padding(
+                //           padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: [
+                //               IconButton(
+                //                   onPressed: () => Navigator.pop(context),
+                //                   icon: Image.asset(
+                //                       'assets/images/icons/ic_back.png')),
+                //               const Text(
+                //                 'Бренды',
+                //                 style: TextStyle(
+                //                     color: primaryColor, fontSize: 13),
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //         Container(
+                //           margin: EdgeInsets.symmetric(horizontal: 30),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: [
+                //               IconButton(
+                //                 icon: Image.asset(
+                //                     'assets/images/icons/korzina Icon.png'),
+                //               onPressed: (){
+                //                   Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(),));
+                //               },
+                //               ),
+                //
+                //               _appBarSearchIcon,
+                //               InkWell(
+                //                 onTap: _searchPressed,
+                //                 child: _searchIcon,
+                //               )
+                //             ],
+                //           ),
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -145,9 +263,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     : Container(),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                      maxHeight: onPressedSeeAll
-                          ? MediaQuery.of(context).size.height / 1.28
-                          : MediaQuery.of(context).size.height / 1.24,
+                      maxHeight:onPressedSeeAll? MediaQuery.of(context).size.height / 1.28: MediaQuery.of(context).size.height / 1.24,
                       maxWidth: MediaQuery.of(context).size.width / 1.1),
                   child: activeColor
                       ? Column(
@@ -159,7 +275,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                         maxWidth:
                                             MediaQuery.of(context).size.width *
                                                 100),
-                                    child: CategoriesGridHorizontal())
+
+                                    child: CategoriesGridHorizontal(index: state.initialScrollIndexState,))
                                 : Container(),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -197,12 +314,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ),
                               ],
                             ),
-                            BlocProvider.value(
-                              value: CategoryCubit(cardGrid: CardList,category: CategoryItemList),
-                              child: Expanded(
-                                  child: categoriesCardGridHorizontal(
-                                      context, onPressedSeeAll)),
-                            ),
+                            Expanded(child: categoriesCardGridHorizontal(context,onPressedSeeAll)),
                           ],
                         )
                       : categoriesGrid(context),
@@ -215,7 +327,6 @@ class _CategoryPageState extends State<CategoryPage> {
     ));
   }
 
-// ScrollController controller = ScrollController();
   /// uchtalik GridView.builderning widgeti
   // Widget categoriesGrid(BuildContext context) {
   //   return BlocBuilder<CategoryCubit, CategoryState>(
@@ -264,6 +375,7 @@ class _CategoryPageState extends State<CategoryPage> {
               childAspectRatio: 2.002 / 2.55),
           itemBuilder: (context, int index) {
             final brand = state.brands[index];
+            CategoriesGridHorizontal(index: index,);
             // return buildCategory(brand, index);
             return CategoryItems(
               isActiveColor: brand.isActiveColor,
@@ -273,7 +385,7 @@ class _CategoryPageState extends State<CategoryPage> {
               id: brand.id,
               callback: () {
                 BlocProvider.of<CategoryCubit>(context)
-                    .callBack(index, activeColor);
+                    .callBack(index, state.activeColor);
                 debugPrint(' buuuuuuuuuuuuuuuu ${brand.title}');
                 activeColor = true;
               },
@@ -288,7 +400,7 @@ class _CategoryPageState extends State<CategoryPage> {
     return Container(
       height: 22,
       margin: EdgeInsets.only(left: 12),
-      width: MediaQuery.of(context).size.width / 1.3,
+      width: MediaQuery.of(context).size.width / 1.5,
       decoration: BoxDecoration(
           color: Color(0xff515151).withOpacity(0.8),
           borderRadius: BorderRadius.circular(5)),
