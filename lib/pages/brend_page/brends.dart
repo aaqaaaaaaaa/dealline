@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dealline/pages/brend_page/bloc/brands_cubit.dart';
 import 'package:dealline/pages/brend_page/data/data.dart';
 import 'package:dealline/pages/category_page/category_page.dart';
@@ -5,9 +7,13 @@ import 'package:dealline/pages/favorites/favorite_page.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../favorites/favorites_model.dart';
+import '../product_item_screen/entity/element_card.dart';
 
 class BrandPage extends StatelessWidget {
-  const BrandPage({Key? key}) : super(key: key);
+   BrandPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +55,24 @@ class _BrandsState extends State<Brands> {
   //     }
   //   });
   // }
+  int groupCount = 4;
 
+  //
   // @override
-  // void initState() {
+  // void setState(F) async {
+  //   final box = await Hive.openBox<ElementCard>('group_box');
+  //   int count = box.length;
+  //   groupCount = count;
   //   BlocProvider.of<BrandsCubit>(context).brands = model_list;
-  //   super.initState();
+  //   super.setState();
   // }
+  @override
+  void setState(VoidCallback fn) async {
+    super.setState(fn);
+    final box = await Hive.openBox<ElementCard>('group_box');
+    int count = box.length;
+    groupCount = count;
+  }
 
   // void _searchPressed() {
   //   setState(() {
@@ -77,6 +95,8 @@ class _BrandsState extends State<Brands> {
 
   @override
   Widget build(BuildContext context) {
+    int groupCount =
+    GroupsWidgetModelProvider.read(context)?.model.groups.length ?? 4;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -98,92 +118,48 @@ class _BrandsState extends State<Brands> {
         bottom: PreferredSize(
           preferredSize: const Size(double.infinity, 40),
           child: Container(
-            margin: EdgeInsets.only(bottom: 10, left: 30,right: 30),
+            margin: EdgeInsets.only(bottom: 10, left: 30, right: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                    onPressed: () => Navigator.push(
+                Stack(
+                  fit: StackFit.loose,
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => FavoritesPage(),
-                        )),
-                    icon: Image.asset('assets/images/icons/korzina Icon.png')),
+                        ),
+                      ),
+                      icon: Image.asset('assets/images/icons/korzina Icon.png'),
+                    ),
+                    Positioned(
+                      top: 7,
+                      right: 10,
+                      child: Container(
+                        padding:
+                            EdgeInsets.only(left: 5, right: 5, bottom: 1.5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.red),
+                        alignment: Alignment.center,
+                        child: Text('${groupCount}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.start),
+                      ),
+                    )
+                  ],
+                ),
                 _appBarSearchIcon,
                 InkWell(
                   onTap: _searchPressed,
                   child: _searchIcon,
                 ),
-                // Container(
-                //   height: 137,
-                //   decoration: BoxDecoration(
-                //     color: Colors.black.withOpacity(1),
-                //     image: const DecorationImage(
-                //       fit: BoxFit.cover,
-                //       image: AssetImage(
-                //         'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
-                //       ),
-                //     ),
-                //   ),
-                //   child: Container(
-                //     color: Colors.black.withOpacity(0.7),
-                //     child: Column(
-                //       children: [
-                //         const SizedBox(
-                //           height: 35,
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.start,
-                //             children: [
-                //               IconButton(
-                //                   onPressed: () => Navigator.pop(context),
-                //                   icon: Image.asset(
-                //                       'assets/images/icons/ic_back.png')),
-                //               const Text(
-                //                 'Меню',
-                //                 style:
-                //                 TextStyle(color: primaryColor, fontSize: 13),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         Container(
-                //           margin: EdgeInsets.symmetric(horizontal: 30),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               Image.asset('assets/images/icons/korzina Icon.png'),
-                //               _appBarSearchIcon,
-                //               InkWell(
-                //                 onTap: _searchPressed,
-                //                 child: _searchIcon,
-                //               )
-                //             ],
-                //           ),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // bottom: PreferredSize(
-                //   child: Container(
-                //     margin: EdgeInsets.symmetric(horizontal: 30),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Image.asset('assets/images/icons/korzina Icon.png'),
-                //         _appBarSearchIcon,
-                //         InkWell(
-                //           onTap: _searchPressed,
-                //           child: _searchIcon,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                //   preferredSize: Size.fromHeight(117),
-                // ),
               ],
             ),
           ),
@@ -227,6 +203,14 @@ class _BrandsState extends State<Brands> {
         ),
       ),
     );
+  }
+
+  void _elementCount(int count) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(ElementCardAdapter());
+    }
+    final box = await Hive.openBox<ElementCard>('group_box');
+    count = box.length;
   }
 
   Widget buildBrand(BrandModel brands) {

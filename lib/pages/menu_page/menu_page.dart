@@ -1,14 +1,18 @@
 import 'package:dealline/pages/favorites/favorite_page.dart';
+import 'package:dealline/pages/menu_page/dialogs/cubit/market_cubit.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/bloc_card/card_grid_horizontal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../settings/settings_page.dart';
 import 'dialogs/dialog_otchyoti.dart';
 import 'dialogs/dialog_otpravit.dart';
 import 'dialogs/dialog_platit.dart';
-import 'dialogs/zakazatDialog.dart';
+import 'dialogs/search_dialog/zakazatDialog.dart';
+
+
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -41,7 +45,9 @@ class _MenuPageState extends State<MenuPage> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width / 3.02,
                         child: InkWell(
-                          onTap: () => showDialogZakazat(context),
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => DialogZ()),
                           child: const MenuCard(
                               icon: 'assets/images/icons/zakazatIcon.png',
                               title: 'Заказать'),
@@ -52,7 +58,11 @@ class _MenuPageState extends State<MenuPage> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width / 3.02,
                         child: InkWell(
-                          onTap: () => showDialogPlatit(context),
+                          onTap: () =>showDialog(
+                            context: context,
+                            builder: (_) => BlocProvider.value(value: BlocProvider.of<MarketCubit>(context),
+                            child: DialogPlatit(),
+                            )),
                           child: const MenuCard(
                               icon: 'assets/images/icons/platitIcon.png',
                               title: 'Платить'),

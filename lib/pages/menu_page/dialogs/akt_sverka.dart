@@ -2,6 +2,21 @@ import 'package:dealline/pages/brend_page/brends.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:dealline/widgets/dropdwonButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'cubit/market_cubit.dart';
+import 'data/data.dart';
+
+class AktDialog extends StatelessWidget {
+  const AktDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<MarketCubit>(
+        create: (context) => MarketCubit(marketCubit: market_list,title:market_list[0].dokon,region:market_list[0].region),
+    child: Diallog());
+  }
+}
 
 class Diallog extends StatefulWidget {
   const Diallog({Key? key}) : super(key: key);

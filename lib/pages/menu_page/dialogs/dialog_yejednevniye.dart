@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dealline/styles/styles.dart';
 
 import 'dialog_otpravit.dart';
-import 'zakazatDialog.dart';
+import 'search_dialog/zakazatDialog.dart';
 
 const values = [
   'Отчёт по бренду',
@@ -128,7 +128,9 @@ void showDialogYejednevniye(BuildContext context) => showDialog(
                           if (selectedValue == values.first) {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => OtchyotPage(),));
                           } else if (selectedValue == values.last) {
-                            showDialogZakazat(context);
+                            showDialog(
+                                context: context,
+                                builder: (context) => DialogZ());
                           } else {
                             // showDialogZakazat(context);
                             Navigator.pop(context);

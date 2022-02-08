@@ -4,7 +4,8 @@ class CategoryState {
   late List<CategoryItem> brands;
   TextEditingController? filter = TextEditingController();
   late String? catName;
-  late bool activeColor = false;  late List<CardInGridViewHorizontal> favorite;
+  late bool activeColor = false;
+  late List<CardInGridViewHorizontal> favorite;
 
   ScrollController? controller;
 

@@ -16,7 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           children: [
             Container(
-              height: 230,
+              height: 252,
               decoration: BoxDecoration(
                   image: DecorationImage(
                 image: AssetImage(

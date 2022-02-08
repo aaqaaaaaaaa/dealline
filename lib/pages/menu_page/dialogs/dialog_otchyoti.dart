@@ -5,7 +5,7 @@ import 'package:dealline/styles/styles.dart';
 
 import 'dialog_platit.dart';
 import 'dialog_yejednevniye.dart';
-import 'zakazatDialog.dart';
+import 'search_dialog/zakazatDialog.dart';
 
 const values = ['Ежедневные отчёты', 'Клиентская Акт-Сверка', 'Дебит кредит'];
 String selectedValue = values.first;
@@ -68,11 +68,9 @@ class _OtchyotDialogState extends State<OtchyotDialog> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0),
       child: Dialog(
-        shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
 // contentPadding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-        insetPadding:
-        const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+        insetPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
 // titlePadding: EdgeInsets.all(0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -114,7 +112,7 @@ class _OtchyotDialogState extends State<OtchyotDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                      style:dialogButtonStyle,
+                      style: dialogButtonStyle,
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -134,11 +132,11 @@ class _OtchyotDialogState extends State<OtchyotDialog> {
                       } else if (selectedValue == 'Клиентская Акт-Сверка') {
                         showDialog(
                             context: context,
-                            builder: (context) => Diallog());
+                            builder: (context) => AktDialog());
                       } else if (selectedValue == 'Дебит кредит') {
                         showDialog(
                             context: context,
-                            builder: (context) =>  ShowDialogDebitKredit());
+                            builder: (context) => ShowDialogDebitKredit());
                       } else {
                         // showDialogZakazat(context);
                         Navigator.pop(context);
@@ -166,7 +164,6 @@ class _OtchyotDialogState extends State<OtchyotDialog> {
     );
   }
 }
-
 
 void showDialogOtchyoti(BuildContext context) => showDialog(
     context: context,
@@ -258,7 +255,7 @@ void showDialogOtchyoti(BuildContext context) => showDialog(
                           } else if (selectedValue == 'Клиентская Акт-Сверка') {
                             showDialog(
                                 context: context,
-                                builder: (context) => Diallog());
+                                builder: (context) => AktDialog());
                           } else if (selectedValue == 'Дебит кредит') {
                             showDialog(
                                 context: context,

@@ -16,7 +16,8 @@ class Category extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CategoryCubit>(
-      create: (context) => CategoryCubit(category: CategoryItemList, initialScrollIndex: 0),
+      create: (context) =>
+          CategoryCubit(category: CategoryItemList, initialScrollIndex: 0),
       child: CategoryPage(
         title: title,
       ),
@@ -56,6 +57,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    var groupCount = 0;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -77,17 +79,44 @@ class _CategoryPageState extends State<CategoryPage> {
           bottom: PreferredSize(
             preferredSize: const Size(double.infinity, 40),
             child: Container(
-              margin: EdgeInsets.only(bottom: 10, left: 30,right: 30),
+              margin: EdgeInsets.only(bottom: 10, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                      onPressed: () => Navigator.push(
+                  Stack(
+                    fit: StackFit.loose,
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => FavoritesPage(),
-                          )),
-                      icon: Image.asset('assets/images/icons/korzina Icon.png')),
+                          ),
+                        ),
+                        icon:
+                            Image.asset('assets/images/icons/korzina Icon.png'),
+                      ),
+                      Positioned(
+                        top: 7,
+                        right: 10,
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(left: 5, right: 5, bottom: 1.5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.red),
+                          alignment: Alignment.center,
+                          child: Text('${groupCount}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.start),
+                        ),
+                      )
+                    ],
+                  ),
                   _appBarSearchIcon,
                   InkWell(
                     onTap: _searchPressed,
@@ -169,162 +198,172 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
         ),
         body: BlocBuilder<CategoryCubit, CategoryState>(
-      builder: (context, state) {
-        return Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Container(
-                //   height: 137,
-                //   decoration: BoxDecoration(
-                //       color: Colors.black.withOpacity(1),
-                //       image: const DecorationImage(
-                //           fit: BoxFit.cover,
-                //           image: AssetImage(
-                //             'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
-                //           ))),
-                //   child: Container(
-                //     color: Colors.black.withOpacity(0.7),
-                //     child: Column(
-                //       children: [
-                //         const SizedBox(
-                //           height: 35,
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.start,
-                //             children: [
-                //               IconButton(
-                //                   onPressed: () => Navigator.pop(context),
-                //                   icon: Image.asset(
-                //                       'assets/images/icons/ic_back.png')),
-                //               const Text(
-                //                 'Бренды',
-                //                 style: TextStyle(
-                //                     color: primaryColor, fontSize: 13),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //         Container(
-                //           margin: EdgeInsets.symmetric(horizontal: 30),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               IconButton(
-                //                 icon: Image.asset(
-                //                     'assets/images/icons/korzina Icon.png'),
-                //               onPressed: (){
-                //                   Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(),));
-                //               },
-                //               ),
-                //
-                //               _appBarSearchIcon,
-                //               InkWell(
-                //                 onTap: _searchPressed,
-                //                 child: _searchIcon,
-                //               )
-                //             ],
-                //           ),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 20,
-                ),
-                onPressedSeeAll
-                    ? Row(
-                        children: [
-                          Text.rich(TextSpan(children: [
-                            TextSpan(
-                                text: '    ${widget.title}', style: textStyle),
-                            TextSpan(text: '     Категории', style: textStyle),
-                            TextSpan(
-                                text: '     ${state.catName ?? ''}',
-                                style: categoryTextStyle)
-                          ])),
-                          Expanded(child: Container()),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  activeColor = !activeColor;
-                                });
-                              },
-                              icon: activeColor
-                                  ? Image.asset(
-                                      'assets/images/category_image/horizontal grid.png')
-                                  : Image.asset(
-                                      'assets/images/category_image/vertical icon.png'))
-                        ],
-                      )
-                    : Container(),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                      maxHeight:onPressedSeeAll? MediaQuery.of(context).size.height / 1.28: MediaQuery.of(context).size.height / 1.24,
-                      maxWidth: MediaQuery.of(context).size.width / 1.1),
-                  child: activeColor
-                      ? Column(
-                          children: [
-                            onPressedSeeAll
-                                ? ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                        maxHeight: 160,
-                                        maxWidth:
-                                            MediaQuery.of(context).size.width *
-                                                100),
-
-                                    child: CategoriesGridHorizontal(index: state.initialScrollIndexState,))
-                                : Container(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          builder: (context, state) {
+            return Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Container(
+                    //   height: 137,
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.black.withOpacity(1),
+                    //       image: const DecorationImage(
+                    //           fit: BoxFit.cover,
+                    //           image: AssetImage(
+                    //             'assets/images/brand_logo/samsung-ecobubble-ww6000-review-the-ww80j6410cw-a-fantastic-washing-machine-3 1.png',
+                    //           ))),
+                    //   child: Container(
+                    //     color: Colors.black.withOpacity(0.7),
+                    //     child: Column(
+                    //       children: [
+                    //         const SizedBox(
+                    //           height: 35,
+                    //         ),
+                    //         Padding(
+                    //           padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.start,
+                    //             children: [
+                    //               IconButton(
+                    //                   onPressed: () => Navigator.pop(context),
+                    //                   icon: Image.asset(
+                    //                       'assets/images/icons/ic_back.png')),
+                    //               const Text(
+                    //                 'Бренды',
+                    //                 style: TextStyle(
+                    //                     color: primaryColor, fontSize: 13),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //         Container(
+                    //           margin: EdgeInsets.symmetric(horizontal: 30),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               IconButton(
+                    //                 icon: Image.asset(
+                    //                     'assets/images/icons/korzina Icon.png'),
+                    //               onPressed: (){
+                    //                   Navigator.push(context, MaterialPageRoute(builder: (context) => FavoritesPage(),));
+                    //               },
+                    //               ),
+                    //
+                    //               _appBarSearchIcon,
+                    //               InkWell(
+                    //                 onTap: _searchPressed,
+                    //                 child: _searchIcon,
+                    //               )
+                    //             ],
+                    //           ),
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    onPressedSeeAll
+                        ? Row(
+                            children: [
+                              Text.rich(TextSpan(children: [
+                                TextSpan(
+                                    text: '    ${widget.title}',
+                                    style: textStyle),
+                                TextSpan(
+                                    text: '     Категории', style: textStyle),
+                                TextSpan(
+                                    text: '     ${state.catName ?? ''}',
+                                    style: categoryTextStyle)
+                              ])),
+                              Expanded(child: Container()),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      activeColor = !activeColor;
+                                    });
+                                  },
+                                  icon: activeColor
+                                      ? Image.asset(
+                                          'assets/images/category_image/horizontal grid.png')
+                                      : Image.asset(
+                                          'assets/images/category_image/vertical icon.png'))
+                            ],
+                          )
+                        : Container(),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxHeight: onPressedSeeAll
+                              ? MediaQuery.of(context).size.height / 1.28
+                              : MediaQuery.of(context).size.height / 1.24,
+                          maxWidth: MediaQuery.of(context).size.width / 1.1),
+                      child: activeColor
+                          ? Column(
                               children: [
-                                SizedBox(
-                                  width: 200,
-                                  child: AutoSizeText(
-                                    '${state.catName ?? ''}',
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 13),
-                                  ),
-                                ),
-                                Expanded(child: Container()),
+                                onPressedSeeAll
+                                    ? ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                            maxHeight: 160,
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                100),
+                                        child: CategoriesGridHorizontal(
+                                          index: state.initialScrollIndexState,
+                                        ))
+                                    : Container(),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TextButton(
-                                      onPressed: () => setState(
-                                        () =>
-                                            onPressedSeeAll = !onPressedSeeAll,
-                                      ),
-                                      child: Text(
-                                        'Посмотреть все',
+                                    SizedBox(
+                                      width: 200,
+                                      child: AutoSizeText(
+                                        '${state.catName ?? ''}',
+                                        maxLines: 1,
                                         style: TextStyle(
-                                            fontSize: 10, color: Colors.black),
+                                            color: Colors.black, fontSize: 13),
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 12,
-                                      color: Colors.black,
-                                    )
+                                    Expanded(child: Container()),
+                                    Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () => setState(
+                                            () => onPressedSeeAll =
+                                                !onPressedSeeAll,
+                                          ),
+                                          child: Text(
+                                            'Посмотреть все',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 12,
+                                          color: Colors.black,
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
+                                Expanded(
+                                    child: categoriesCardGridHorizontal(
+                                        context, onPressedSeeAll)),
                               ],
-                            ),
-                            Expanded(child: categoriesCardGridHorizontal(context,onPressedSeeAll)),
-                          ],
-                        )
-                      : categoriesGrid(context),
+                            )
+                          : categoriesGrid(context),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      },
-    ));
+              ),
+            );
+          },
+        ));
   }
 
   /// uchtalik GridView.builderning widgeti
@@ -375,7 +414,9 @@ class _CategoryPageState extends State<CategoryPage> {
               childAspectRatio: 2.002 / 2.55),
           itemBuilder: (context, int index) {
             final brand = state.brands[index];
-            CategoriesGridHorizontal(index: index,);
+            CategoriesGridHorizontal(
+              index: index,
+            );
             // return buildCategory(brand, index);
             return CategoryItems(
               isActiveColor: brand.isActiveColor,

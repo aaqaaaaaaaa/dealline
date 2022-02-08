@@ -45,7 +45,7 @@ dependencies:
   flutter_slidable: ^1.2.0
   scrollable_positioned_list: ^0.2.3
   vibration: ^1.7.4-nullsafety.0
-
+  search_choices: ^2.0.17
 dev_dependencies:
   flutter_test:
     sdk: flutter

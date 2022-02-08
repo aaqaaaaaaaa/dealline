@@ -7,6 +7,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../widgets/bloc_card/card_grid_horizontal.dart';
 import '../../../widgets/category_item.dart';
+import '../../product_item_screen/entity/element_card.dart';
 
 part 'category_state.dart';
 
@@ -38,10 +39,7 @@ class CategoryCubit extends Cubit<CategoryState> {
     ));
   }
 
-  void callBack(
-    int index,
-    bool activeColor,
-  ) {
+  void callBack(int index, bool activeColor) {
     emit(CategoryState(
         catName: catName,
         brands: category,
@@ -66,7 +64,8 @@ class CategoryCubit extends Cubit<CategoryState> {
     activeColor = true;
   }
 
-  void favoriteCallBack(int index, List<CardInGridViewHorizontal> favorite) {
+  void favoriteCallBack(
+      int index, List<CardInGridViewHorizontal> favorite) async {
     emit(
       FavoriteState(
         brands: category,
@@ -76,10 +75,18 @@ class CategoryCubit extends Cubit<CategoryState> {
     );
     for (int i = 0; i < favorite.length; i++) {
       if (index == i) {
-       final box =Hive.box('Favorite_Box');
-       box.put('favorite', '${CardList[index].id}');
-       print(' Favorite ${box.get('favorite')}');
-      } else {}
+        if (!Hive.isAdapterRegistered(1)) {
+          Hive.registerAdapter(ElementCardAdapter());
+        }
+        final box = await Hive.openBox<ElementCard>('group_box');
+        final group = ElementCard(
+            name: CardList[index].title,
+            image: '${CardList[index].image}',
+            price: '${CardList[index].price}',
+            description: CardList[index].description);
+        await box.add(group);
+        print(' Favorite ${box.get('group_box')}');
+      }
     }
   }
 

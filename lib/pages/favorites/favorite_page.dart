@@ -1,15 +1,8 @@
-import 'package:dealline/pages/category_page/cubit/category_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../styles/styles.dart';
 import '../../widgets/bloc_card/card_grid_horizontal.dart';
-import '../../widgets/bloc_card/cardgrid_cubit.dart';
-import '../menu_page/dialogs/dialog_yejednevniye.dart';
-import '../product_item_screen/element_card_widget_in_hero.dart';
+import 'favorites_model.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -19,7 +12,17 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  final box = Hive.box('Favorite_Box');
+  final _model = GroupsWidgetModel();
+
+  @override
+  Widget build(BuildContext context) {
+    return GroupsWidgetModelProvider(
+        model: _model, child: const _FavoriteBody());
+  }
+}
+
+class _FavoriteBody extends StatelessWidget {
+  const _FavoriteBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,66 +58,66 @@ class _FavoritesPageState extends State<FavoritesPage> {
             ],
           ),
         ),
-        body: ListView.builder(
-            controller: controller,
-            scrollDirection: Axis.vertical,
-            itemCount: box.values.length,
-            itemBuilder: (context, int index) {
-              return Slidable(
-                direction: Axis.horizontal,
-                endActionPane: ActionPane(
-                  motion: ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      flex: 1,
-                      onPressed: (context) {
-                        setState(() {});
-                        box.deleteAt(index);
-                        print(' uchib ketti ${box.delete(index)}');
-                        // CardList.removeAt(index);
-                      },
-                      backgroundColor: primaryColor,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete_outline,
-                      label: 'Delete',
-                    ),
-                  ],
-                ),
-                child: Card(
-                  child: ListTile(
-                    title: Text(box.get('favorite')),
-                    subtitle: Text('${CardList[index].price}'),
-                    leading: Image.asset('${CardList[index].image}'),
-                  ),
-                ),
-                // child: Card(
-                //   child: ListTile(
-                //     title: Text(state.favorite[index].title),
-                //     subtitle: Text('${state.favorite[index].price}'),
-                //     leading: Image.asset('${state.favorite[index].image}'),
-                //   ),
-                // ),
-              );
-              // CardGridWidget(
-              //   id: state.cardState[index].id,
-              //   selectedItem: state.cardState[index].isSelected,
-              //   price: state.cardState[index].price,
-              //   description: '${state.cardState[index].description}',
-              //   image: "${state.cardState[index].image}",
-              //   title: '${state.cardState[index].title}');
+        body: _ElementCardListWidget());
+  }
+}
 
-              //   isActiveColor: activeColor,
-              //   numb: CategoryItemList[index].number,
-              //   titles: '${CategoryItemList[index].title}',
-              //   images: '${CategoryItemList[index].image}',
-              //   id: CategoryItemList[index].id,
-              //   callback: () {
-              //     setState(() {
-              //       if (CategoryItemList[index].id == index)
-              //         activeColor = !activeColor;
-              //     });
-              //   },
-              // );
-            }));
+class _ElementCardListWidget extends StatelessWidget {
+  const _ElementCardListWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final groupCount =
+        GroupsWidgetModelProvider.watch(context)?.model.groups.length ?? 0;
+
+    return ListView.builder(
+        controller: controller,
+        scrollDirection: Axis.vertical,
+        itemCount: groupCount,
+        itemBuilder: (context, int index) {
+          return _ElementCardListRowWidget(
+            indexInList: index,
+          );
+        });
+  }
+}
+
+class _ElementCardListRowWidget extends StatelessWidget {
+  const _ElementCardListRowWidget({
+    Key? key,
+    required this.indexInList,
+  }) : super(key: key);
+  final int indexInList;
+
+  @override
+  Widget build(BuildContext context) {
+    final model = GroupsWidgetModelProvider.read(context)?.model;
+    final group =
+        GroupsWidgetModelProvider.read(context)!.model.groups[indexInList];
+    return Slidable(
+      direction: Axis.horizontal,
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            flex: 1,
+            onPressed: (context) => model?.deleteGroup(indexInList),
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+            icon: Icons.delete_outline,
+            label: 'Delete',
+          ),
+        ],
+      ),
+      child: Card(
+        child: ListTile(
+          title: Text(group.name),
+          subtitle: Text('${group.price} сум'),
+          leading: Image.asset(group.image),
+        ),
+      ),
+    );
   }
 }

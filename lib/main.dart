@@ -1,6 +1,7 @@
 import 'package:dealline/pages/brend_page/brends.dart';
 import 'package:dealline/pages/login/authentification_page.dart';
 import 'package:dealline/pages/category_page/category_page.dart';
+import 'package:dealline/pages/menu_page/menu_page.dart';
 import 'package:dealline/pages/product_item_screen/element_card_widget_in_hero.dart';
 import 'package:dealline/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           primaryColor: primaryColor,
           primarySwatch: Colors.amber,
         ),
-        home: AuthPage()
+        home: MenuPage()
         // AuthPage(),
         );
   }
